@@ -1,0 +1,157 @@
+<html>
+<head>
+   <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+   <script src="js/jquery.min.js"></script>
+   <script type="text/javascript" src="js/jquery.flippy.min.js"></script>
+   <script src="js/jquery.popupoverlay.js"></script>
+   <script language="javascript">
+     var pic_count = [0, 2, 2, 4, 2, 6, 3, 5, 1, 1, 2, 2, 12, 5, 5, 8];
+     var questions = [
+      '',
+      'מה השם משפחה הקודם של אמא?',
+      'באיזו שנה אמא נולדה?',
+      'מה מעשיה של אמא לאחרונה בסלון?',
+      'באיזה בי"ס למדה בתיכון?',
+      'באיזו שנה אמא ואבא נישאו?',
+      'היכן שירתה אמא בצבא?',
+      'לפני ה"חצי" יציאה לפנסיה, מה היה תפקידה של אמא בביה"ס (את כולם בבקשה)?',
+      'מה אמא עושה מדי יום שלישי בבוקר?',
+      'מנויים, מנויים, מנויים. ציינו 3 מנויים לפחות שיש לאמא.',
+      'באיזה רכב אמא נוהגת? נא לדייק.',
+      'שברים, שברים, שברים. לצערנו נשברנו כמה פעמים לאחרונה. היכן היו השברים ומתי בדיוק?',
+      'ציינו 3 מקומות לפחות בהם אמא טיילה לאחרונה בעולם. ',
+      'מה משותף בשמות 3 הילדים?',
+      'ישנם שני דברים שאמא לא מוותרת עליהם. מהם?',
+      'אמא קיבלה פרס כבוד מראש עיירית ירושלים. מהו הפרס והיכן היה הטקס המכובד?'
+     ];
+     $(document).ready(function() {
+      
+      $('#main_table tr td').click(function() {
+        q = $(this).html();
+        $('#q' + q).popup('show');
+      });
+
+      var i;
+      for (i = 1; i <= 15; i++) {
+        pop = $(document.createElement('div')).appendTo($(document.body));
+        pop.context.id = "q" + i;
+        pop.context.className = 'question';
+        pop.popup({
+          opacity: 0.3,
+          transition: 'all 0.3s'
+        });
+
+        qtext = $(document.createElement('div'));
+        qtext.appendTo(pop);
+        qtext.html(questions[i]);
+        qtext.context.className = 'qtext';
+        qtext.context.qNum = i;
+
+        qtext.click(function() {
+          $(this).hide();
+          var q = $(this).context.qNum;
+          img = $(document.createElement('img'));
+          img.attr('src','img/' + q + '/1.jpg');
+          img.appendTo($('#q' + q));
+          img.context.seq = "1";
+          img.context.qNum = q;
+          img.context.className = 'img_q';
+
+          img.click(function() {
+            var seq = $(this).context.seq * 1;
+            var qNum = $(this).context.qNum * 1;
+            console.log(seq, qNum);
+            if (seq < pic_count[qNum]) {
+              seq++;
+              $(this).attr('src','img/' + qNum + '/' + seq + '.jpg');
+              $(this).context.seq = seq;
+            } else {
+              $('#q' + qNum).popup('hide');
+              $('#td' + qNum).css('visibility', 'hidden');
+            }
+          });
+        });
+      }
+      
+     });
+   </script>
+   <style type="text/css">
+    #back {
+      background-image: url('img/big.jpg');
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+    .question {
+      background-color: white;
+      padding: 5px;
+      width: 95%;
+      height: 95%;
+      text-align: center !important;
+
+    }
+    .qtext {
+      font-size: 50px;
+      direction: rtl;
+      vertical-align: middle;
+      height: 100%;
+      margin-top: 100px;
+    }
+    .img_q {
+      height: 100%;
+      margin: 0 auto;
+    }
+    #main_table {
+      border-collapse:collapse;
+      width: 100%;
+      height: 100%;
+      table-layout:fixed;
+    }
+    #main_table tr td {
+      border: solid 1px #000;
+      background-color: white;
+      text-align: center;      
+      padding: 0;
+      cursor: pointer;
+      width: 20%;
+      overflow: hidden;
+      font-size: 50px;
+    }
+    body {
+      padding:0;
+      margin: 0;
+      font-family: Arial;
+    }
+   </style>
+</head>
+<body>
+  <div id="back">
+    <table id="main_table">
+      <tr>
+        <td id="td1">1</td>
+        <td id="td2">2</td>
+        <td id="td3">3</td>
+        <td id="td4">4</td>
+        <td id="td5">5</td>
+      </tr>
+      <tr>
+        <td id="td6">6</td>
+        <td id="td7">7</td>
+        <td id="td8">8</td>
+        <td id="td9">9</td>
+        <td id="td10">10</td>
+      </tr>
+      <tr>
+        <td id="td11">11</td>
+        <td id="td12">12</td>
+        <td id="td13">13</td>
+        <td id="td14">14</td>
+        <td id="td15">15</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>
